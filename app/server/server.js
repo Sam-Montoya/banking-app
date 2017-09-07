@@ -34,7 +34,7 @@ passport.use(new Auth0Strategy({
 
     DB.find_user(profile.id).then(user => {
         if (user[0]) {
-            return done(null, user);
+            return done(null, user[0]);
         } else {    //CREATES A USER WITH THE DATABASE TABLE, THEN RETURNS IT
             DB.create_user([
                 profile.displayName
@@ -42,6 +42,7 @@ passport.use(new Auth0Strategy({
                 , profile.picture
                 , profile.id
             ]).then(user => {
+                console.log(user);
                 return done(null, user[0]);
             })
         }
@@ -55,7 +56,7 @@ passport.serializeUser(function (user, done) {
 
 //USER COMES FROM SESSION - THIS IS INVOKED FOR EVERY ENDPOINT
 passport.deserializeUser(function (user, done) {
-    app.get('DB').find_session_user(user[0].id).then(user => {
+    app.get('DB').find_session_user(user.id).then(user => {
         return done(null, user[0]);
     });
 });
@@ -68,8 +69,6 @@ app.get('/auth/callback', passport.authenticate('auth0', {
 }));
 
 app.get('/auth/me', (request, response) => {
-    console.log('Full request: ' + request);
-    console.log('user ' + request.user);
     if (!request.user) {
         return response.status(404).send('ERROR: User logged in or found.');
     } else {

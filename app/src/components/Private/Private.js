@@ -12,8 +12,8 @@ class Private extends Component {
     render() {
         return (
             <div>
-                <h1>Community Bank</h1>
                 <div className='accountInfoContainer'>
+                    <h1>Community Bank</h1>
                     <h4>Account Information:</h4>
                     {this.props.user ?
                         <img className='avatar' src={this.props.user.img} alt='avatar' />
@@ -40,7 +40,7 @@ class Private extends Component {
                             :
                             null}</h4>
                     </div>
-                        <a href={process.env.REACT_APP_LOGOUT}><button>Logout</button></a>
+                    <a href={process.env.REACT_APP_LOGOUT}><button>Logout</button></a>
                 </div>
             </div>
         )
